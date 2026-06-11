@@ -3,11 +3,13 @@ import "./Dealers.css";
 import "../assets/style.css";
 import Header from '../Header/Header';
 import review_icon from "../assets/reviewicon.png"
+import { useParams } from 'react-router-dom';
 
 const Dealers = () => {
   const [dealersList, setDealersList] = useState([]);
   // let [state, setState] = useState("")
   let [states, setStates] = useState([])
+  let params = useParams();
 
   // let root_url = window.location.origin
   let dealer_url ="/djangoapp/get_dealers";
@@ -43,7 +45,12 @@ const Dealers = () => {
     }
   }
   useEffect(() => {
-    get_dealers();
+    if (params.state) {
+      get_dealers();
+      filterDealers(params.state);
+    } else {
+      get_dealers();
+    }
   },[]);  
 
 
