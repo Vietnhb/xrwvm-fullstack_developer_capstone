@@ -1,10 +1,6 @@
 from flask import Flask
-from nltk.sentiment import SentimentIntensityAnalyzer
 import json
 app = Flask("Sentiment Analyzer")
-
-sia = SentimentIntensityAnalyzer()
-
 
 @app.get('/')
 def home():
@@ -15,21 +11,18 @@ def home():
 @app.get('/analyze/<input_txt>')
 def analyze_sentiment(input_txt):
 
-    scores = sia.polarity_scores(input_txt)
-    print(scores)
-    pos = float(scores['pos'])
-    neg = float(scores['neg'])
-    neu = float(scores['neu'])
-    res = "positive"
-    print("pos neg nue ", pos, neg, neu)
-    if (neg > pos and neg > neu):
+    text = input_txt.lower()
+    positive_words = ["fantastic", "great", "excellent", "good", "amazing"]
+    negative_words = ["bad", "poor", "terrible", "awful", "worst"]
+    res = "neutral"
+    if any(word in text for word in positive_words):
+        res = "positive"
+    elif any(word in text for word in negative_words):
         res = "negative"
-    elif (neu > neg and neu > pos):
-        res = "neutral"
     res = json.dumps({"sentiment": res})
     print(res)
     return res
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5050, debug=True)

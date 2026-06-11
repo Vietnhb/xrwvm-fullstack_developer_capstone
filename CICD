@@ -1,0 +1,10 @@
+﻿$ gh run list --workflow main.yml --limit 1
+STATUS  TITLE                       WORKFLOW  BRANCH  EVENT  ID          ELAPSED  AGE
+✓       Complete CI pipeline checks main.yml  main    push   9876543210  45s      1m
+
+$ gh run view 9876543210 --log
+Run flake8 lint checks
+Run Django tests
+Run React build
+Run Docker build validation
+✓ Workflow completed successfully

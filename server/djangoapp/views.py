@@ -29,9 +29,13 @@ logger = logging.getLogger(__name__)
 @csrf_exempt
 def login_user(request):
     # Get username and password from request.POST dictionary
-    data = json.loads(request.body)
-    username = data['userName']
-    password = data['password']
+    if request.body:
+        data = json.loads(request.body)
+        username = data['userName']
+        password = data['password']
+    else:
+        username = request.GET.get('userName')
+        password = request.GET.get('password')
     # Try to check if provide credential can be authenticated
     user = authenticate(username=username, password=password)
     data = {"userName": username}
@@ -55,12 +59,19 @@ def logout_request(request):
 def registration(request):
     # Get user data from request form
     # context = {}
-    data = json.loads(request.body)
-    username = data['userName']
-    password = data['password']
-    first_name = data['firstName']
-    last_name = data['lastName']
-    email = data['email']
+    if request.body:
+        data = json.loads(request.body)
+        username = data['userName']
+        password = data['password']
+        first_name = data['firstName']
+        last_name = data['lastName']
+        email = data['email']
+    else:
+        username = request.GET.get('userName')
+        password = request.GET.get('password')
+        first_name = request.GET.get('firstName', '')
+        last_name = request.GET.get('lastName', '')
+        email = request.GET.get('email', '')
     username_exist = False
     # email_exist = False
     try:
